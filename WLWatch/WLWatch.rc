@@ -29,6 +29,7 @@ BEGIN
     POPUP "&File"
     BEGIN
         MENUITEM "打开音频文件",                      ID_FILE_OPEN
+        MENUITEM "保存特征数据",                      ID_FILE_SAVE
         MENUITEM SEPARATOR
         MENUITEM "E&xit",                       ID_APP_EXIT
     END
