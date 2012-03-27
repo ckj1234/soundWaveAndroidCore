@@ -251,9 +251,10 @@ public:
 		CSqliteStmt getCheckOfAnchor =db.Prepare(L"select freq,time_offset from Check_freq_index where Anchor_id=?1");
 
 		std::vector<FreqInfo> freqinfos_use;
+		std::map<FreqInfo*,std::map<int,int> > check_use_count;
 		for(auto i=freqinfos.begin();i<freqinfos.end();i++)
 		{
-			if(i->freq>20 && i->freq<400)
+			if(i->freq>40 && i->freq<350)
 			{
 				freqinfos_use.push_back(*i);
 			}
@@ -264,6 +265,22 @@ public:
 		std::map<int,std::vector<CheckPoint> > AnchorMap;
 		for(auto i=freqinfos_use.begin();i<freqinfos_use.end();i++)
 		{
+				auto used=check_use_count.find(&(*i));
+				if(used!=check_use_count.end())
+				{
+					bool notcheck=false;
+					for(auto j=used->second.begin();j!=used->second.end();j++)
+					{
+						if(j->second>=2)
+						{
+							notcheck=true;
+							break;
+						}
+					}
+					if(notcheck)
+						continue;
+				}
+
 			vector<FreqPoint> maybeid;
 			findAnchor.Bind(1,i->freq);
 			while(SQLITE_ROW==findAnchor.Step())
@@ -312,6 +329,7 @@ public:
 								cp->time_offset>=time_offset-1 && cp->time_offset<=time_offset+1)
 							{
 								match_count++;
+								check_use_count[&(*j)][maybe->song_id]++;
 							}
 						}
 					}
@@ -588,29 +606,6 @@ public:
 			std::vector<double> line(SampleCount/2);
 			for(size_t j=checkR;j<SampleCount/2-checkR;j++)
 			{
-					/*const double core1[3][3]={
-						{-1,0,1},
-						{-2,0,2},
-						{-1,0,1}
-					};
-					const double core2[3][3]={
-						{1,2,1},
-						{0,0,0},
-						{-1,-2,-1}
-					};
-					double gx=0;
-					double gy=0;
-					for(int testi=-checkR;testi<checkR;testi++)
-					{
-						for(int testj=-checkR;testj<checkR;testj++)
-						{
-							double v=dataline[i+testi][j+testj];
-							gx+=v*core1[testi+1][testj+1];
-							gy+=v*core2[testi+1][testj+1];
-						}
-					}
-					double gpoint=sqrt(gx*gx+gy*gy);
-					line[j]=gpoint;*/
 				const double core1[5][5]={
 					{0,-0.5,-1,-0.5,0},
 					{-0.5,-1,-2,-1,-0.5},

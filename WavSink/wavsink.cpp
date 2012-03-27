@@ -2345,7 +2345,6 @@ STDMETHODIMP CWavRecord::WaveData(void* data,DWORD datalen)
 	{
 		for(int i=0;i<count;i+=2)
 		{
-			SHRT_MIN;
 			double left=((double)*(((short*)data)+i)-SHRT_MIN)/(SHRT_MAX-SHRT_MIN+1);
 			double right=((double)*(((short*)data)+i+1)-SHRT_MIN)/(SHRT_MAX-SHRT_MIN+1);
 			double value=0;
@@ -2365,19 +2364,21 @@ STDMETHODIMP CWavRecord::WaveData(void* data,DWORD datalen)
 }
 STDMETHODIMP CWavRecord::WaveProcess()
 {
-	while(m_FreqSave.size()>=SampleCount)
+	size_t proc_end=0;
+	while(m_FreqSave.size()>=proc_end+SampleCount)
 	{
-		std::vector<double> tempfreq(m_FreqSave.begin(),m_FreqSave.begin()+SampleCount);
 		std::vector<double> outR(SampleCount),outI(SampleCount);
-		fft_double(SampleCount,false,&tempfreq[0],nullptr,&outR[0],&outI[0]);
+		fft_double(SampleCount,false,&m_FreqSave[proc_end],nullptr,&outR[0],&outI[0]);
 		std::vector<double> freqRes(SampleCount/2);
 		for(int i=0;i<SampleCount/2;i++)
 		{
 			freqRes[i]=sqrt(outR[i]*outR[i]+outI[i]*outI[i]);
 		}
-		m_FreqSave.erase(m_FreqSave.begin(),m_FreqSave.begin()+SampleCount);
+		
 		m_FreqSamples.push_back(std::move(freqRes));
+		proc_end+=SampleCount;
 	}
+	m_FreqSave.erase(m_FreqSave.begin(),m_FreqSave.begin()+proc_end);
 	return S_OK;
 }
 STDMETHODIMP CWavRecord::WaveEnd()

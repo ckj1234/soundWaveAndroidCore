@@ -4,7 +4,8 @@
 
 #pragma once
 #include "DIBBitmap.h"
-static const size_t SampleCount=8192;
+#include "..\WavSink\WavSink.h"
+static const size_t SampleCount=CWavRecord::SampleCount;
 const int WM_CLIENTMOUSEMOVE=WM_USER+1;
 
 class CFreqWatchView : public CScrollWindowImpl<CFreqWatchView>

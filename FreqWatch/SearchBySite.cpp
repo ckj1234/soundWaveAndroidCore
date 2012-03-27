@@ -16,7 +16,7 @@ bool CSearchBySite::StartSearch()
 	songresult.clear();
 	json2::CJsonObject mainobj;
 
-	//mainobj.PutBool(L"procinfo",true);
+	mainobj.PutBool(L"procinfo",true);
 	json2::PJsonArray dataarray=new json2::CJsonArray();
 	mainobj.PutValue(L"data",dataarray);
 
