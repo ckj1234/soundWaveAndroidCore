@@ -15,6 +15,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FreqWatch", "FreqWatch\Freq
 		{D2F665AB-E49E-4FF5-BC56-9FC9E1AEE3D9} = {D2F665AB-E49E-4FF5-BC56-9FC9E1AEE3D9}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WLWatch", "WLWatch\WLWatch.vcxproj", "{03880398-2349-424E-8FBD-6409689912AE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D2F665AB-E49E-4FF5-BC56-9FC9E1AEE3D9} = {D2F665AB-E49E-4FF5-BC56-9FC9E1AEE3D9}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -45,6 +50,12 @@ Global
 		{2B6C0C95-32F5-46AA-A3F0-545B5B3C827D}.Release|Win32.ActiveCfg = Release|Win32
 		{2B6C0C95-32F5-46AA-A3F0-545B5B3C827D}.Release|Win32.Build.0 = Release|Win32
 		{2B6C0C95-32F5-46AA-A3F0-545B5B3C827D}.Release|x64.ActiveCfg = Release|Win32
+		{03880398-2349-424E-8FBD-6409689912AE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{03880398-2349-424E-8FBD-6409689912AE}.Debug|Win32.Build.0 = Debug|Win32
+		{03880398-2349-424E-8FBD-6409689912AE}.Debug|x64.ActiveCfg = Debug|Win32
+		{03880398-2349-424E-8FBD-6409689912AE}.Release|Win32.ActiveCfg = Release|Win32
+		{03880398-2349-424E-8FBD-6409689912AE}.Release|Win32.Build.0 = Release|Win32
+		{03880398-2349-424E-8FBD-6409689912AE}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
