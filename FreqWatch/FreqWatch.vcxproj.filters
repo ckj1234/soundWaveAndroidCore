@@ -50,13 +50,13 @@
     <ClInclude Include="DIBBitmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="music_reader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UploadFreqData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SearchBySite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="music_reader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
