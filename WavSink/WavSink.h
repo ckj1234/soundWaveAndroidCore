@@ -96,6 +96,17 @@ class CWavRecord:public CComObjectRootEx<CComSingleThreadModel>,public IWaveData
 	}
 	static HRESULT CreateInstanse(const IID &id,void** vp);
 };
+class CWaveBufferReader:public CWavRecord
+{
+public:
+	STDMETHODIMP WaveProcess();
+	template<class TYPE>
+	static HRESULT CreateInstanse(TYPE** vp)
+	{
+		return CreateInstanse(__uuidof(TYPE),(void**)vp);
+	}
+	static HRESULT CreateInstanse(const IID &id,void** vp);
+};
 class CWavSink : public IMFFinalizableMediaSink,   // Note: IMFFinalizableMediaSink inherits IMFMediaSink
                  public IMFClockStateSink
 {

@@ -29,21 +29,7 @@ HRESULT CreateOutputNode(IMFMediaSink *pSink, DWORD iStream, IMFTopologyNode **p
 
 HRESULT RunMediaSession(IMFTopology *pTopology);
 
-
-///////////////////////////////////////////////////////////////////////
-//  Name: wmain
-//  Description:  Entry point to the application.
-//
-//  Usage: writewavfile.exe inputfile outputfile
-///////////////////////////////////////////////////////////////////////
-
-
-///////////////////////////////////////////////////////////////////////
-//  Name: ReadMusicFrequencyData
-//  Description:  
-///////////////////////////////////////////////////////////////////////
-
-std::vector<std::vector<double>> ReadMusicFrequencyData(const WCHAR *sURL)
+std::vector<std::vector<double>> ReadMusicSrcData(const WCHAR *sURL)
 {
     //CComPtr<IMFByteStream> pStream;
     CComPtr<IMFMediaSink> pSink;
@@ -51,7 +37,7 @@ std::vector<std::vector<double>> ReadMusicFrequencyData(const WCHAR *sURL)
     CComPtr<IMFTopology> pTopology;
 	CComPtr<IWaveDataRecorder> waveRecord;
 	HRESULT hr=0;
-	hr=CWavRecord::CreateInstanse(&waveRecord);
+	hr=CWaveBufferReader::CreateInstanse(&waveRecord);
     //hr = MFCreateFile(MF_ACCESSMODE_WRITE, MF_OPENMODE_DELETE_IF_EXIST, MF_FILEFLAGS_NONE, sOutputFile, &pStream);
     if (FAILED(hr))
     {
@@ -96,6 +82,7 @@ std::vector<std::vector<double>> ReadMusicFrequencyData(const WCHAR *sURL)
 		waveRecord->PullOutData(&data);
     return data;
 }
+
 
 ///////////////////////////////////////////////////////////////////////
 //  Name: RunMediaSession

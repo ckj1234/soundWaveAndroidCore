@@ -2409,3 +2409,19 @@ HRESULT CWavRecord::CreateInstanse(const IID &id,void** vp)
 	}
 	return S_OK;
 }
+
+STDMETHODIMP CWaveBufferReader::WaveProcess()
+{
+	return S_OK;
+}
+
+HRESULT CWaveBufferReader::CreateInstanse(const IID &id,void** vp)
+{
+	CWavRecord* newone=new CComObjectNoLock<CWaveBufferReader>();
+	if(newone->QueryInterface(id,vp)!=S_OK)
+	{
+		delete newone;
+		return E_FAIL;
+	}
+	return S_OK;
+}
