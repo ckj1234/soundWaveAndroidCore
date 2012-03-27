@@ -1895,6 +1895,7 @@ HRESULT CWavStream::WriteSampleToFile(IMFSample *pSample)
 	{
 		for(DWORD i=0;i<count;i++)
 		{
+			pBuffer=NULL;
 			hr = pSample->GetBufferByIndex(i,&pBuffer);
 
 			// Lock the buffer and write the data to the file.
