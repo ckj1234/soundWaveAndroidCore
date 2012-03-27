@@ -3,7 +3,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
-#include "DIBBitmap.h"
+#include <DIBBitmap.h>
 #include "..\WavSink\WavSink.h"
 static const size_t SampleCount=CWavRecord::SampleCount;
 const int WM_CLIENTMOUSEMOVE=WM_USER+1;

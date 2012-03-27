@@ -77,9 +77,17 @@ public:
 		return 0;
 	}
 
+	CAtlString openFileName;
 	LRESULT OnFileOpen(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 	{
-		
+		CFileDialog openfile(TRUE);
+		if(IDOK!=openfile.DoModal())
+			return S_FALSE;
+
+		openFileName=openfile.m_szFileName;
+		openFileName=openFileName.Right(openFileName.GetLength()-openFileName.ReverseFind('\\')-1);
+		openFileName=openFileName.Left(openFileName.Find('.'));
+		std::vector<std::vector<double>> dataline= ReadMusicSrcData(openfile.m_szFileName);
 		return 0;
 	}
 

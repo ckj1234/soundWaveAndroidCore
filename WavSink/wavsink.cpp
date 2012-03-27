@@ -2412,6 +2412,7 @@ HRESULT CWavRecord::CreateInstanse(const IID &id,void** vp)
 
 STDMETHODIMP CWaveBufferReader::WaveProcess()
 {
+	m_FreqSamples.push_back(std::move(m_FreqSave));
 	return S_OK;
 }
 
