@@ -216,6 +216,7 @@ public:
 		CSqlite db;
 		db.Open(L"D:\\freq_info.data.db",SQLITE_OPEN_READONLY);
 		CSqliteStmt testAnchor=db.Prepare(L"select song_id,anchor_time from Anchor_Check_list where anchor_freq=?1 and check_freq=?2 and time_offset=?3");
+		CSqliteStmt getSongName=db.Prepare(L"select name from songlist where id=?1");
 
 		std::vector<FreqInfo> freqinfos_use;
 		std::map<FreqInfo*,std::map<int,int> > check_use_count;
@@ -320,9 +321,17 @@ public:
 			countor->second.starttimeMaxCount=maxcount;
 		}
 
+		
 		for(auto i=matchcountor.begin();i!=matchcountor.end();++i)
 		{
-			resinfo.AppendFormat(_T("found song:%d (%d time,startMatch %d)\n"),i->first,i->second.count,i->second.starttimeMaxCount);
+			CAtlString filename;
+			getSongName.Bind(1,i->first);
+			if(getSongName.Step()==SQLITE_ROW)
+			{
+				filename=CA2W(getSongName.GetText(0),CP_UTF8);
+			}
+			getSongName.Reset();
+			resinfo.AppendFormat(_T("found song:%d (%d time,startMatch %d) %s\n"),i->first,i->second.count,i->second.starttimeMaxCount,filename);
 		}
 		MessageBox(resinfo);
 		return S_OK;
@@ -442,6 +451,7 @@ public:
 		MessageBox(_T("µãÈ·¶¨Í£Ö¹Â¼Òô"));
 
 		runing=false;
+		Sleep(500);
 		mmres=waveInStop(hwi);
 		mmres=waveInReset(hwi);
 		mmres=waveInUnprepareHeader(hwi,&whdr, sizeof(WAVEHDR));

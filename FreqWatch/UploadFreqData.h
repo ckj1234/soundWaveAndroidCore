@@ -6,11 +6,9 @@ private:
 	CSqliteStmt readOption;
 	CSqliteStmt writeOption;
 	CSqliteStmt getNextSongToUpload;
-	CSqliteStmt getAnchorPoint;
-	CSqliteStmt getChecker;
+	CSqliteStmt getAnchorCheckPoint;
 public:
 	CUploadFreqData(void);
-	~CUploadFreqData(void);
 
 	int DoUpload();
 };

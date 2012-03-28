@@ -16,7 +16,7 @@ bool CSearchBySite::StartSearch()
 	songresult.clear();
 	json2::CJsonObject mainobj;
 
-	mainobj.PutBool(L"procinfo",true);
+	//mainobj.PutBool(L"procinfo",true);
 	json2::PJsonArray dataarray=new json2::CJsonArray();
 	mainobj.PutValue(L"data",dataarray);
 
@@ -36,7 +36,7 @@ bool CSearchBySite::StartSearch()
 	CSockAddr saddr(L"liveplustest.sinaapp.com",L"80");
 	HTTPClient::SocketEx socket;
 
-	HTTPClient::HttpRequest request("POST","/music/findSongByFreqData.php");
+	HTTPClient::HttpRequest request("POST","/music/FindSongByFreqData2.php");
 	request.setHost("liveplustest.sinaapp.com");
 	request.setContentType("gzip/json");
 	request.setContentLength(strout.memstream->GetBufferSize());
