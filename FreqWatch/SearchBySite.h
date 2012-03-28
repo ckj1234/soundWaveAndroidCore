@@ -4,6 +4,7 @@ struct SongResult
 {
 	int song_id;
 	int match_count;
+	int maxposcount;
 	CAtlString filename;
 };
 class CSearchBySite

@@ -5,7 +5,7 @@
 CUploadFreqData::CUploadFreqData(void)
 {
 	db.Open(L"D:\\freq_info.data.db");
-	int res=db.Execute(L"CREATE TABLE WorkOption (name  TEXT(64),value  INTEGER,PRIMARY KEY (name))");
+	int res=db.Execute(L"CREATE TABLE WorkOption (name varchar(64) PRIMARY KEY,value int)");
 	readOption=db.Prepare(L"select value from WorkOption where name=?1");
 	writeOption=db.Prepare(L"replace into WorkOption(name,value) values(?1,?2)");
 	getNextSongToUpload=db.Prepare(L"select id,name from songlist where id>?1 order by id limit 1");

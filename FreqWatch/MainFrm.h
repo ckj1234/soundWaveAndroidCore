@@ -9,6 +9,11 @@
 #include "UploadFreqData.h"
 #include "SearchBySite.h"
 #include "..\WavSink\Fourier.h"
+const int FreqMin=40;
+const int FreqMax=600;
+const int WindowFreq=30;
+const int WindowTimeMin=5;
+const int WindowTimeMax=65;
 class CMainFrame : 
 	public CFrameWindowImpl<CMainFrame>, 
 	public CUpdateUI<CMainFrame>,
@@ -141,6 +146,7 @@ public:
 	}
 	void SaveMusicInfoToDb(CAtlString title)
 	{
+		int sqlres=0;
 		CSqlite db;
 		db.Open(L"D:\\freq_info.data.db");
 		CSqliteStmt insertFileName=db.Prepare(L"insert into songlist(name) values(?1)");
@@ -166,7 +172,7 @@ public:
 			std::vector<FreqInfo> freqinfos_use;
 			for(auto i=freqinfos.begin();i<freqinfos.end();i++)
 			{
-				if(i->freq>40 && i->freq<600)
+				if(i->freq>FreqMin && i->freq<FreqMax)
 				{
 					freqinfos_use.push_back(*i);
 				}
@@ -177,28 +183,25 @@ public:
 				std::vector<FreqInfo> anchor_sub;
 				for(auto j=i+1;j<freqinfos_use.end();j++)
 				{
-					if(j->time>i->time+45)
+					if(j->time>i->time+WindowTimeMax)
 						break;
-					if(j->freq>i->freq-30 && j->freq<i->freq+30 &&
-						j->time>i->time+5)
+					if(j->freq>i->freq-WindowFreq && j->freq<i->freq+WindowFreq &&
+						j->time>i->time+WindowTimeMin)
 					{
 						anchor_sub.push_back(*j);
 					}
 				}
 				if(anchor_sub.size()>3)
 				{
-					if(anchor_sub.size()>3)
+					for(auto j=anchor_sub.begin();j!=anchor_sub.end();j++)
 					{
-						for(auto j=anchor_sub.begin();j!=anchor_sub.end();j++)
-						{
-							insertACPair.Bind(1,song_id);
-							insertACPair.Bind(2,i->time);
-							insertACPair.Bind(3,i->freq);
-							insertACPair.Bind(4,j->freq);
-							insertACPair.Bind(5,j->time-i->time);
-							insertACPair.Step();
-							insertACPair.Reset();
-						}
+						insertACPair.Bind(1,song_id);
+						insertACPair.Bind(2,i->time);
+						insertACPair.Bind(3,i->freq);
+						insertACPair.Bind(4,j->freq);
+						insertACPair.Bind(5,j->time-i->time);
+						sqlres=insertACPair.Step();
+						sqlres=insertACPair.Reset();
 					}
 				}
 			}
@@ -222,7 +225,7 @@ public:
 		std::map<FreqInfo*,std::map<int,int> > check_use_count;
 		for(auto i=freqinfos.begin();i<freqinfos.end();i++)
 		{
-			if(i->freq>40 && i->freq<350)
+			if(i->freq>FreqMin && i->freq<FreqMax)
 			{
 				freqinfos_use.push_back(*i);
 			}
@@ -231,13 +234,13 @@ public:
 		int maybecount=0;
 		for(auto i=freqinfos_use.begin();i<freqinfos_use.end();i++)
 		{
-			/*auto used=check_use_count.find(&(*i));
+			auto used=check_use_count.find(&(*i));
 			if(used!=check_use_count.end())
 			{
 				bool notcheck=false;
 				for(auto j=used->second.begin();j!=used->second.end();j++)
 				{
-					if(j->second>=2)
+					if(j->second>=3)
 					{
 						notcheck=true;
 						break;
@@ -245,16 +248,16 @@ public:
 				}
 				if(notcheck)
 					continue;
-			}*/
+			}
 
 			for(auto j=i+1;j!=freqinfos_use.end();j++)
 			{
 				maybecount++;
 				int time_offset=j->time-i->time;
-				if(time_offset>45)
+				if(time_offset>WindowTimeMax)
 					break;
-				if(j->freq>i->freq-30 && j->freq<i->freq+30 &&
-						j->time>i->time+5)
+				if(j->freq>i->freq-WindowFreq && j->freq<i->freq+WindowFreq &&
+						j->time>i->time+WindowTimeMin)
 				{
 					testAnchor.Bind(1,i->freq);
 					testAnchor.Bind(2,j->freq);
@@ -350,7 +353,7 @@ public:
 			CAtlString resinfo;
 			for(auto i=serachbysite.songresult.begin();i!=serachbysite.songresult.end();i++)
 			{
-				resinfo.AppendFormat(_T("song_id:%d match:%d name:%s\n"),i->song_id,i->match_count,i->filename);
+				resinfo.AppendFormat(_T("song_id:%d match:%d startM:%d name:%s\n"),i->song_id,i->match_count,i->maxposcount,i->filename);
 			}
 			MessageBox(resinfo);
 		}

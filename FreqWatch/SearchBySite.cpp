@@ -66,6 +66,7 @@ bool CSearchBySite::StartSearch()
 				SongResult oneresult;
 				oneresult.song_id=song->GetNumber(L"song_id");
 				oneresult.match_count=song->GetNumber(L"count");
+				oneresult.maxposcount=song->GetNumber(L"maxposcount");
 				oneresult.filename=song->GetString(L"filename");
 				songresult.push_back(oneresult);
 			}
