@@ -36,7 +36,7 @@ bool CSearchBySite::StartSearch()
 	CSockAddr saddr(L"liveplustest.sinaapp.com",L"80");
 	HTTPClient::SocketEx socket;
 
-	HTTPClient::HttpRequest request("POST","/music/FindSongByFreqData2.php");
+	HTTPClient::HttpRequest request("POST","/music/FindSongByFreqData3.php");
 	request.setHost("liveplustest.sinaapp.com");
 	request.setContentType("gzip/json");
 	request.setContentLength(strout.memstream->GetBufferSize());
